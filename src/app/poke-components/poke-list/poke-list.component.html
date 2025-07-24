@@ -1,0 +1,6 @@
+<section>
+  <div>
+    @for(pokemon of pokemons; track pokemon.id) {
+    <app-poke-card [pokemon]="pokemon"></app-poke-card> }
+  </div>
+</section>
