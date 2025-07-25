@@ -1,6 +1,9 @@
 <section>
-  <div>
+  <div class="poke-list">
     @for(pokemon of pokemons; track pokemon.id) {
     <app-poke-card [pokemon]="pokemon"></app-poke-card> }
+    <button mat-raised-button color="accent" class="reload-pokemons">
+      Fetch new ones
+    </button>
   </div>
 </section>

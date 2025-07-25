@@ -2,10 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { PokeService } from "../poke.service";
 import { Pokemon } from "../../models/pokemon.model";
 import { Pokecard } from "../poke-card/poke-card.component";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: "app-poke-list",
-  imports: [Pokecard],
+  imports: [Pokecard, MatButtonModule],
   templateUrl: "./poke-list.component.html",
   styleUrl: "./poke-list.component.scss",
 })

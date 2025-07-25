@@ -1,1 +1,17 @@
-<div>{{ pokemon().name }}</div>
+<mat-card class="poke-card">
+  <img
+    class="poke-card-image"
+    [src]="pokemon().sprite"
+    alt="{{ pokemon().name }}"
+  />
+  <div>
+    <mat-card-header>{{ pokemonName() | titlecase }}</mat-card-header>
+    <mat-card-content>
+      <ul class="moves-list">
+        @for(move of pokemon().moves; track move) {
+        <li>{{ move }}</li>
+        }
+      </ul>
+    </mat-card-content>
+  </div>
+</mat-card>
