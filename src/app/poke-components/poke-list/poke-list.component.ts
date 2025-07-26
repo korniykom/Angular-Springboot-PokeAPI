@@ -5,17 +5,24 @@ import { Pokecard } from "../poke-card/poke-card.component";
 import { MatButtonModule } from "@angular/material/button";
 import { PokeChips } from "../poke-chips/poke-chips.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: "app-poke-list",
-  imports: [Pokecard, MatButtonModule, PokeChips, MatProgressSpinnerModule],
+  imports: [
+    Pokecard,
+    MatButtonModule,
+    PokeChips,
+    MatProgressSpinnerModule,
+    MatIconModule,
+  ],
   templateUrl: "./poke-list.component.html",
   styleUrl: "./poke-list.component.scss",
 })
 export class PokeList implements OnInit {
   pokemons: Pokemon[] = [];
   isLoading: boolean = false;
-  error: string | null = null;
+  error: boolean = false;
   currentSort: string | null = null;
 
   constructor(private pokemonService: PokeService) {}
@@ -26,7 +33,7 @@ export class PokeList implements OnInit {
 
   loadPokemons() {
     (this.isLoading = true),
-      (this.error = null),
+      (this.error = false),
       this.pokemonService.getRandomPokemons(12).subscribe({
         next: (pokemons) => {
           (this.pokemons = pokemons), (this.isLoading = false);
@@ -34,7 +41,7 @@ export class PokeList implements OnInit {
         },
         error: (error) => {
           console.log("Error loading pokemons", error);
-          this.error = error;
+          this.error = true;
           this.isLoading = false;
         },
       });

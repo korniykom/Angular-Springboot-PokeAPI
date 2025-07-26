@@ -25,7 +25,15 @@ export class PokeService {
       )
     );
     return forkJoin(requests).pipe(
-      map((results) => results.filter((result) => result != null) as Pokemon[])
+      map((results) => {
+        const filtered = results.filter(
+          (result) => result != null
+        ) as Pokemon[];
+        if (filtered.length === 0) {
+          throw new Error("Failed to load all pokemons");
+        }
+        return filtered;
+      })
     );
   }
 

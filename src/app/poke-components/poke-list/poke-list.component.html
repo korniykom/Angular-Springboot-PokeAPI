@@ -5,6 +5,22 @@
   <div class="spinner-container">
     <mat-spinner diameter="48" color="accent" />
   </div>
+  } @else if (error) {
+  <div class="error-container">
+    <div class="error">
+      <p class="error-message">
+        Unable to fetch Pokemons. Please check your connection and try again.
+      </p>
+      <button
+        mat-raised-button
+        color="accent"
+        class="reload-pokemons"
+        (click)="loadPokemons()"
+      >
+        Try again
+      </button>
+    </div>
+  </div>
   } @else {
   <div class="poke-list">
     @for(pokemon of pokemons; track pokemon.id) {
