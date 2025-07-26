@@ -1,0 +1,22 @@
+<mat-chip-listbox class="poke-chips">
+  <mat-chip-option
+    [selected]="selected === 'name-asc'"
+    (click)="onChipClick('name-asc')"
+    >Name A &rarr; Z</mat-chip-option
+  >
+  <mat-chip-option
+    [selected]="selected === 'name-desc'"
+    (click)="onChipClick('name-desc')"
+    >Name A &larr; Z</mat-chip-option
+  >
+  <mat-chip-option
+    [selected]="selected === 'move-asc'"
+    (click)="onChipClick('move-asc')"
+    >Move A &rarr; Z</mat-chip-option
+  >
+  <mat-chip-option
+    [selected]="selected === 'move-desc'"
+    (click)="onChipClick('move-desc')"
+    >Move A &larr; Z</mat-chip-option
+  >
+</mat-chip-listbox>

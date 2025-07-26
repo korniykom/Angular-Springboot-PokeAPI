@@ -1,8 +1,14 @@
 <section>
+  <app-poke-chips (sortChange)="onSortChange($event)"></app-poke-chips>
   <div class="poke-list">
     @for(pokemon of pokemons; track pokemon.id) {
     <app-poke-card [pokemon]="pokemon"></app-poke-card> }
-    <button mat-raised-button color="accent" class="reload-pokemons">
+    <button
+      mat-raised-button
+      color="accent"
+      class="reload-pokemons"
+      (click)="loadPokemons()"
+    >
       Fetch new ones
     </button>
   </div>

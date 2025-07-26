@@ -3,10 +3,12 @@ import { PokeService } from "../poke.service";
 import { Pokemon } from "../../models/pokemon.model";
 import { Pokecard } from "../poke-card/poke-card.component";
 import { MatButtonModule } from "@angular/material/button";
+import { PokeChips } from "../poke-chips/poke-chips.component";
+import { B } from "@angular/cdk/keycodes";
 
 @Component({
   selector: "app-poke-list",
-  imports: [Pokecard, MatButtonModule],
+  imports: [Pokecard, MatButtonModule, PokeChips],
   templateUrl: "./poke-list.component.html",
   styleUrl: "./poke-list.component.scss",
 })
@@ -14,6 +16,7 @@ export class PokeList implements OnInit {
   pokemons: Pokemon[] = [];
   isLoading: boolean = false;
   error: string | null = null;
+  currentSort: string | null = null;
 
   constructor(private pokemonService: PokeService) {}
 
@@ -35,5 +38,28 @@ export class PokeList implements OnInit {
           this.isLoading = false;
         },
       });
+  }
+
+  onSortChange(sort: string) {
+    this.currentSort = sort;
+    this.applySort();
+  }
+
+  applySort() {
+    if (!this.currentSort) return;
+    switch (this.currentSort) {
+      case "name-asc":
+        this.pokemons.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "name-desc":
+        this.pokemons.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case "move-asc":
+        this.pokemons.sort((a, b) => a.moves[0].localeCompare(b.moves[0]));
+        break;
+      case "move-desc":
+        this.pokemons.sort((a, b) => b.moves[0].localeCompare(a.moves[0]));
+        break;
+    }
   }
 }
