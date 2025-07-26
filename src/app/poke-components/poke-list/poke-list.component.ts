@@ -4,11 +4,11 @@ import { Pokemon } from "../../models/pokemon.model";
 import { Pokecard } from "../poke-card/poke-card.component";
 import { MatButtonModule } from "@angular/material/button";
 import { PokeChips } from "../poke-chips/poke-chips.component";
-import { B } from "@angular/cdk/keycodes";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
   selector: "app-poke-list",
-  imports: [Pokecard, MatButtonModule, PokeChips],
+  imports: [Pokecard, MatButtonModule, PokeChips, MatProgressSpinnerModule],
   templateUrl: "./poke-list.component.html",
   styleUrl: "./poke-list.component.scss",
 })
