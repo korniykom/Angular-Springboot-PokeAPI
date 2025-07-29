@@ -1,0 +1,24 @@
+<section>
+  @if(isLoading) {
+  <div class="spinner-container">
+    <mat-spinner diameter="48" color="accent" />
+  </div>
+  } @else if(pokemon){
+  <img
+    class="poke-card-image"
+    [src]="pokemon.sprite"
+    alt="{{ pokemon.name }}"
+  />
+  <p>{{ pokemon.name }}</p>
+  } @else if (error) {
+  <div class="error-container">
+    <div class="error">
+      <p class="error-message">
+        Unable to fetch Pokemon. Please check your connection and try again.
+      </p>
+    </div>
+  </div>
+  }@else {
+  <p>Loading Pokémon...</p>
+  }
+</section>

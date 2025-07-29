@@ -17,7 +17,7 @@ export class PokeService {
     const requests = randomIds.map((id) =>
       this.http.get(`${this.BASE_URL}/pokemon/${id}`).pipe(
         retry(2),
-        map(this.mapmapToPokemon),
+        map(this.mapToPokemon),
         catchError((error) => {
           console.log(`Error loading Pokemon ${id}`, error);
           return of(null);
@@ -37,6 +37,17 @@ export class PokeService {
     );
   }
 
+  getPokemonById(id: string) {
+    return this.http.get(`${this.BASE_URL}/pokemon/${id}`).pipe(
+      retry(2),
+      map(this.mapToPokemon),
+      catchError((error) => {
+        console.log(`Error loading Pokemon ${id}`, error);
+        return of(null);
+      })
+    );
+  }
+
   private generateRandomIds(amount: number, minId: number, maxId: number) {
     const ids = new Set<number>();
 
@@ -47,7 +58,7 @@ export class PokeService {
     return Array.from(ids);
   }
 
-  private mapmapToPokemon(data: any) {
+  private mapToPokemon(data: any) {
     return {
       id: data.id,
       name: data.name,

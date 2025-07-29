@@ -1,4 +1,4 @@
-<mat-card class="poke-card">
+<mat-card class="poke-card" [routerLink]="['/pokemon', pokemon().id]">
   <img
     class="poke-card-image"
     [src]="pokemon().sprite"
