@@ -6,10 +6,20 @@ import { PokeInfoScreen } from "./poke-components/poke-info-screen/poke-info-scr
 export const routes: Routes = [
   {
     path: "",
+    redirectTo: "pokemon",
+    pathMatch: "full",
+  },
+  {
+    path: "pokemon",
     component: PokeList,
+    pathMatch: "full",
   },
   {
     path: "pokemon/:pokemonId",
     component: PokeInfoScreen,
+  },
+  {
+    path: "**",
+    redirectTo: "pokemon",
   },
 ];
