@@ -15,9 +15,8 @@ export class PokeService {
     const randomIds = this.generateRandomIds(count, 1, 1025);
 
     const requests = randomIds.map((id) =>
-      this.http.get(`${this.BASE_URL}/pokemon/${id}`).pipe(
+      this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${id}`).pipe(
         retry(2),
-        map(this.mapToPokemon),
         catchError((error) => {
           console.log(`Error loading Pokemon ${id}`, error);
           return of(null);
@@ -38,9 +37,19 @@ export class PokeService {
   }
 
   getPokemonById(id: string) {
-    return this.http.get(`${this.BASE_URL}/pokemon/${id}`).pipe(
+    return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${id}`).pipe(
       retry(2),
-      map(this.mapToPokemon),
+      map(
+        (data) =>
+          ({
+            id: data.id,
+            name: data.name,
+            sprites: {
+              front_default: data.sprites.front_default,
+            },
+            moves: data.moves.slice(0, 2).map((move: any) => move.move.name),
+          } as Pokemon)
+      ),
       catchError((error) => {
         console.log(`Error loading Pokemon ${id}`, error);
         return of(null);
@@ -56,14 +65,5 @@ export class PokeService {
     }
 
     return Array.from(ids);
-  }
-
-  private mapToPokemon(data: any) {
-    return {
-      id: data.id,
-      name: data.name,
-      sprite: data.sprites.front_default,
-      moves: data.moves.slice(0, 2).map((move: any) => move.move.name),
-    };
   }
 }

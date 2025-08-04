@@ -14,7 +14,7 @@ export class Pokecard {
   pokemon = input.required<Pokemon>();
   pokemonId = computed(() => this.pokemon().id);
   pokemonName = computed(() => this.pokemon().name);
-  pokemonSprite = computed(() => this.pokemon().sprite);
-  pokemonFirstMove = computed(() => this.pokemon().moves[0]);
-  pokemonSecondMove = computed(() => this.pokemon().moves[1]);
+  pokemonSprite = computed(() => this.pokemon().sprites.front_default);
+  pokemonFirstMove = computed(() => this.pokemon().moves[0].move.name);
+  pokemonSecondMove = computed(() => this.pokemon().moves[1].move.name);
 }

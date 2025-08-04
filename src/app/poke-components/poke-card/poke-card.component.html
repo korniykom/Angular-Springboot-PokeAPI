@@ -1,16 +1,15 @@
 <mat-card class="poke-card" [routerLink]="['/pokemon', pokemon().id]">
   <img
     class="poke-card-image"
-    [src]="pokemon().sprite"
+    [src]="pokemon().sprites.front_default"
     alt="{{ pokemon().name }}"
   />
   <div>
     <mat-card-header>{{ pokemonName() | titlecase }}</mat-card-header>
     <mat-card-content>
       <ul class="moves-list">
-        @for(move of pokemon().moves; track move) {
-        <li>{{ move }}</li>
-        }
+        <li>{{ pokemonFirstMove() }}</li>
+        <li>{{ pokemonSecondMove() }}</li>
       </ul>
     </mat-card-content>
   </div>

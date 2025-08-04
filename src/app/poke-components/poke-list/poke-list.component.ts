@@ -37,7 +37,6 @@ export class PokeList implements OnInit {
       this.pokemonService.getRandomPokemons(12).subscribe({
         next: (pokemons) => {
           (this.pokemons = pokemons), (this.isLoading = false);
-          console.log(pokemons);
         },
         error: (error) => {
           console.log("Error loading pokemons", error);
@@ -62,10 +61,14 @@ export class PokeList implements OnInit {
         this.pokemons.sort((a, b) => b.name.localeCompare(a.name));
         break;
       case "move-asc":
-        this.pokemons.sort((a, b) => a.moves[0].localeCompare(b.moves[0]));
+        this.pokemons.sort((a, b) =>
+          a.moves[0].move.name.localeCompare(b.moves[0].move.name)
+        );
         break;
       case "move-desc":
-        this.pokemons.sort((a, b) => b.moves[0].localeCompare(a.moves[0]));
+        this.pokemons.sort((a, b) =>
+          b.moves[0].move.name.localeCompare(a.moves[0].move.name)
+        );
         break;
     }
   }
