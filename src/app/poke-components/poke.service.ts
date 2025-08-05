@@ -1,22 +1,31 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { retry, map, catchError, of, forkJoin } from "rxjs";
-import { Pokemon } from "../models/pokemon.model";
+import { Moves, Pokemon } from "../models/pokemon.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class PokeService {
   private readonly BASE_URL = "https://pokeapi.co/api/v2";
+  private readonly MAX_POKEMON_ID = 1025;
+  private readonly MIN_POKEMON_ID = 1;
+  private readonly NUMBER_OF_POKEMONS = 12;
+  private readonly NUMBER_OF_MOVES = 2;
+  private readonly NUMBER_OF_RETRIES = 2;
 
   constructor(private http: HttpClient) {}
 
-  getRandomPokemons(count: number = 12) {
-    const randomIds = this.generateRandomIds(count, 1, 1025);
+  getRandomPokemons(count: number = this.NUMBER_OF_POKEMONS) {
+    const randomIds = this.generateRandomIds(
+      count,
+      this.MIN_POKEMON_ID,
+      this.MAX_POKEMON_ID
+    );
 
     const requests = randomIds.map((id) =>
       this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${id}`).pipe(
-        retry(2),
+        retry(this.NUMBER_OF_RETRIES),
         catchError((error) => {
           console.log(`Error loading Pokemon ${id}`, error);
           return of(null);
@@ -38,7 +47,7 @@ export class PokeService {
 
   getPokemonById(id: string) {
     return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${id}`).pipe(
-      retry(2),
+      retry(this.NUMBER_OF_RETRIES),
       map(
         (data) =>
           ({
@@ -47,7 +56,7 @@ export class PokeService {
             sprites: {
               front_default: data.sprites.front_default,
             },
-            moves: data.moves.slice(0, 2).map((move: any) => move.move.name),
+            moves: data.moves.slice(0, this.NUMBER_OF_MOVES),
           } as Pokemon)
       ),
       catchError((error) => {
@@ -61,7 +70,7 @@ export class PokeService {
     const ids = new Set<number>();
 
     while (ids.size < amount) {
-      ids.add(Math.floor(Math.random() * (maxId - minId + 1)) + minId);
+      ids.add(Math.floor(Math.random() * maxId) + minId);
     }
 
     return Array.from(ids);

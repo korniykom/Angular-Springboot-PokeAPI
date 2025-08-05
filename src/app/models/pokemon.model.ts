@@ -9,10 +9,10 @@ interface Sprites {
   front_default: string;
 }
 
-interface Moves {
+export interface Moves {
   move: Move;
 }
 
-interface Move {
+export interface Move {
   name: string;
 }

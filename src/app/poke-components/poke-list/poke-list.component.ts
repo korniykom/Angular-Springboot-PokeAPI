@@ -20,6 +20,8 @@ import { MatIconModule } from "@angular/material/icon";
   styleUrl: "./poke-list.component.scss",
 })
 export class PokeList implements OnInit {
+  private readonly NUMBER_OF_POKEMONS = 12;
+
   pokemons: Pokemon[] = [];
   isLoading: boolean = false;
   error: boolean = false;
@@ -34,7 +36,7 @@ export class PokeList implements OnInit {
   loadPokemons() {
     (this.isLoading = true),
       (this.error = false),
-      this.pokemonService.getRandomPokemons(12).subscribe({
+      this.pokemonService.getRandomPokemons(this.NUMBER_OF_POKEMONS).subscribe({
         next: (pokemons) => {
           (this.pokemons = pokemons), (this.isLoading = false);
         },
