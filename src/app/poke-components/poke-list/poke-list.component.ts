@@ -34,18 +34,19 @@ export class PokeList implements OnInit {
   }
 
   loadPokemons() {
-    (this.isLoading = true),
-      (this.error = false),
-      this.pokemonService.getRandomPokemons(this.NUMBER_OF_POKEMONS).subscribe({
-        next: (pokemons) => {
-          (this.pokemons = pokemons), (this.isLoading = false);
-        },
-        error: (error) => {
-          console.log("Error loading pokemons", error);
-          this.error = true;
-          this.isLoading = false;
-        },
-      });
+    this.isLoading = true;
+    this.error = false;
+    this.pokemonService.getRandomPokemons(this.NUMBER_OF_POKEMONS).subscribe({
+      next: (pokemons) => {
+        this.pokemons = pokemons;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.log("Error loading pokemons", error);
+        this.error = true;
+        this.isLoading = false;
+      },
+    });
   }
 
   onSortChange(sort: string) {
