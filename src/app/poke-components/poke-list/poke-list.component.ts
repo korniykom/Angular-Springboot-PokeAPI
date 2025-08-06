@@ -46,8 +46,6 @@ export class PokeList implements OnInit {
         map(({ pikachu, pokemons }) => {
           if (!pikachu) {
             throw new Error("Failed to load Pikachu");
-          } else if (pokemons.length === 0) {
-            return [pikachu];
           }
           return [pikachu, ...pokemons];
         })
