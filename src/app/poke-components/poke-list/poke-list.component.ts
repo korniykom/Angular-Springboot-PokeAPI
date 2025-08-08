@@ -6,6 +6,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { PokeChips } from "../poke-chips/poke-chips.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatIconModule } from "@angular/material/icon";
+import { forkJoin, map } from "rxjs";
 
 @Component({
   selector: "app-poke-list",
@@ -20,7 +21,7 @@ import { MatIconModule } from "@angular/material/icon";
   styleUrl: "./poke-list.component.scss",
 })
 export class PokeList implements OnInit {
-  private readonly NUMBER_OF_POKEMONS = 12;
+  private readonly NUMBER_OF_POKEMONS = 11;
 
   pokemons: Pokemon[] = [];
   isLoading: boolean = false;
@@ -36,17 +37,30 @@ export class PokeList implements OnInit {
   loadPokemons() {
     this.isLoading = true;
     this.error = false;
-    this.pokemonService.getRandomPokemons(this.NUMBER_OF_POKEMONS).subscribe({
-      next: (pokemons) => {
-        this.pokemons = pokemons;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.log("Error loading pokemons", error);
-        this.error = true;
-        this.isLoading = false;
-      },
-    });
+
+    forkJoin({
+      pikachu: this.pokemonService.getPickachu(),
+      pokemons: this.pokemonService.getRandomPokemons(this.NUMBER_OF_POKEMONS),
+    })
+      .pipe(
+        map(({ pikachu, pokemons }) => {
+          if (!pikachu) {
+            throw new Error("Failed to load Pikachu");
+          }
+          return [pikachu, ...pokemons];
+        })
+      )
+      .subscribe({
+        next: (pokemons: Pokemon[]) => {
+          this.pokemons = pokemons;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.log("Error loading pokemons", error);
+          this.error = true;
+          this.isLoading = false;
+        },
+      });
   }
 
   onSortChange(sort: string) {

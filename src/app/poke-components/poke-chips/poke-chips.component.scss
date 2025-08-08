@@ -1,4 +1,8 @@
-.poke-chips {
+.poke-chips-container {
   max-width: 42rem;
   margin: 1rem auto;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
