@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/pokemon")
-class PokemonController(private val pokemonService: PokeService) {
 
+class PokemonController(private val pokemonService: PokeService) {
     @GetMapping("/{nameOrId}")
-    fun getPokemon(@PathVariable nameOrId: String): ResponseEntity<Pokemon?> {
+    fun getPokemon(@PathVariable nameOrId: String): Pokemon {
         val pokemon = pokemonService.getPokemon(nameOrId)
-        return ResponseEntity.ok(pokemon)
+        return pokemon
     }
 }
