@@ -1,0 +1,19 @@
+@keyframes pulse-bg {
+  0% {
+    background-color: var(--mat-sys-primary-container);
+  }
+  50% {
+    background-color: var(--mat-sys-secondary-container);
+    filter: brightness(1.1);
+  }
+  100% {
+    background-color: var(--mat-sys-tertiary-container);
+  }
+}
+
+mat-chip {
+  color: var(--mat-sys-on-primary-container);
+  animation: pulse-bg 2s ease-in-out infinite;
+  transition: color 0.2s ease;
+  padding: 0 12px;
+}

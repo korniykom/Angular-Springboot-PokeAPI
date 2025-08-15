@@ -14,8 +14,8 @@ class PokeService(private val restTemplate: RestTemplate) {
 
     fun getPokemon(nameOrId: String): Pokemon {
 
-        val pokemonResponse = restTemplate.getForObject<Pokemon>("$POKEMON_BASE_URL/$nameOrId")
         val habitatResponse = restTemplate.getForObject<SpeciesResponse>("$HABITAT_BASE_URL/$nameOrId")
+        val pokemonResponse = restTemplate.getForObject<Pokemon>("$POKEMON_BASE_URL/$nameOrId")
 
         return pokemonResponse.copy(
             habitat = habitatResponse.habitat?.name
