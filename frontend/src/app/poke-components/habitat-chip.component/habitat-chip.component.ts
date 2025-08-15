@@ -6,11 +6,7 @@ import { Pokemon } from "../../models/pokemon.model";
 @Component({
   selector: "app-habitat-chip",
   imports: [MatChipsModule],
-  template: `
-    <mat-chip>
-      <ng-content></ng-content>
-    </mat-chip>
-  `,
+  templateUrl: "./habitat-chip.component.html",
   styleUrl: "./habitat-chip.component.scss",
 })
 export class HabitatChipComponent {}
