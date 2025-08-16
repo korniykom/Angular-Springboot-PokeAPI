@@ -2,10 +2,11 @@ import { Component, input, OnInit } from "@angular/core";
 import { PokeService } from "../poke.service";
 import { Pokemon } from "../../models/pokemon.model";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { HabitatChipComponent } from "../habitat-chip.component/habitat-chip.component";
 
 @Component({
   selector: "app-poke-info-screen",
-  imports: [MatProgressSpinnerModule],
+  imports: [MatProgressSpinnerModule, HabitatChipComponent],
   templateUrl: "./poke-info-screen.html",
   styleUrl: "./poke-info-screen.scss",
 })
@@ -18,6 +19,7 @@ export class PokeInfoScreen implements OnInit {
   constructor(private pokeService: PokeService) {}
 
   ngOnInit(): void {
+    console.log(this.pokemon);
     this.pokeService.getPokemonById(this.pokemonId()).subscribe({
       next: (data) => {
         if (data) {

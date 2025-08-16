@@ -7,7 +7,7 @@ import { Moves, Pokemon } from "../models/pokemon.model";
   providedIn: "root",
 })
 export class PokeService {
-  private readonly BASE_URL = "https://pokeapi.co/api/v2";
+  private readonly BASE_URL = "http://localhost:1337";
   private readonly MAX_POKEMON_ID = 1025;
   private readonly MIN_POKEMON_ID = 1;
   private readonly NUMBER_OF_POKEMONS = 12;
@@ -26,6 +26,12 @@ export class PokeService {
     const requests = randomIds.map((id) =>
       this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${id}`).pipe(
         retry(this.NUMBER_OF_RETRIES),
+        map((pokemon) => {
+          console.log(
+            `Fetched Pokemon: ${pokemon.name} (habitat: ${pokemon.habitat})`
+          );
+          return pokemon;
+        }),
         catchError((error) => {
           console.log(`Error loading Pokemon ${id}`, error);
           return of(null);
@@ -67,6 +73,7 @@ export class PokeService {
               front_default: data.sprites.front_default,
             },
             moves: data.moves.slice(0, this.NUMBER_OF_MOVES),
+            habitat: data.habitat,
           } as Pokemon)
       ),
       catchError((error) => {
