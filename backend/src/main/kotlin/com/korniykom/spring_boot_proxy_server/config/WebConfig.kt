@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class WebConfig : WebMvcConfigurer {
     override fun addViewControllers(registry: ViewControllerRegistry) {
+        registry.addViewController("/poke-api").setViewName("forward:/poke-api/index.html")
         registry.addViewController("/poke-api/").setViewName("forward:/poke-api/index.html")
         registry.addViewController("/poke-api/{spring:[^\\.]*}").setViewName("forward:/poke-api/index.html")
     }
