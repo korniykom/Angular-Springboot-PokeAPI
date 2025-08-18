@@ -1,7 +1,7 @@
 data class Pokemon(
     val id: Int,
     val name: String,
-    val habitat: String?,
+    val location: String?,
     val sprites: Sprites?,
     val moves: List<Moves>?
 )

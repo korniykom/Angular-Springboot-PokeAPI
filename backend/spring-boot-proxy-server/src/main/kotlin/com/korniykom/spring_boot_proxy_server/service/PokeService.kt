@@ -1,24 +1,24 @@
 package com.korniykom.spring_boot_proxy_server.service
 
 import Pokemon
-import com.korniykom.spring_boot_proxy_server.model.SpeciesResponse
+import com.korniykom.spring_boot_proxy_server.model.EncounterResponse
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
 
-const val POKEMON_BASE_URL = "https://pokeapi.co/api/v2/pokemon"
-const val HABITAT_BASE_URL = "https://pokeapi.co/api/v2/pokemon-species"
+const val BASE_URL = "https://pokeapi.co/api/v2/pokemon"
 
 @Service
 class PokeService(private val restTemplate: RestTemplate) {
 
     fun getPokemon(nameOrId: String): Pokemon {
 
-        val habitatResponse = restTemplate.getForObject<SpeciesResponse>("$HABITAT_BASE_URL/$nameOrId")
-        val pokemonResponse = restTemplate.getForObject<Pokemon>("$POKEMON_BASE_URL/$nameOrId")
+        val encountersResponse =
+            restTemplate.getForObject<Array<EncounterResponse>>("https://pokeapi.co/api/v2/pokemon/1/encounters")
+        val pokemonResponse = restTemplate.getForObject<Pokemon>("$BASE_URL/$nameOrId")
 
         return pokemonResponse.copy(
-            habitat = habitatResponse.habitat?.name
+            location = encountersResponse.first().location_area?.name
         )
     }
 }
