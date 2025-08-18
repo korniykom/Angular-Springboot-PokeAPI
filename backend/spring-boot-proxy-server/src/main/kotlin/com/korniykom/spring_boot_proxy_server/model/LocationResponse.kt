@@ -1,6 +1,6 @@
 package com.korniykom.spring_boot_proxy_server.model
 
-data class EncounterResponse(
+data class LocationResponse(
     val location_area: LocationArea?
 )
 
