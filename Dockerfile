@@ -6,9 +6,11 @@ WORKDIR /app
 
 RUN git clone https://github.com/korniykom/Angular-Springboot-PokeAPI.git
 
-WORKDIR /app/Angular-Springboot-PokeAPI/backend/spring-boot-proxy-server
+WORKDIR /app/Angular-Springboot-PokeAPI/backend/
 
 RUN chmod +x gradlew && ./gradlew build -x test --no-daemon
+
+
 
 FROM alpine:latest AS runtime
 
