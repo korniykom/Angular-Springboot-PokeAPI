@@ -7,7 +7,7 @@ import { Moves, Pokemon } from "../models/pokemon.model";
   providedIn: "root",
 })
 export class PokeService {
-  private readonly BASE_URL = "http://localhost:1337";
+  private readonly BASE_URL = "http://localhost:8080";
   private readonly MAX_POKEMON_ID = 1025;
   private readonly MIN_POKEMON_ID = 1;
   private readonly NUMBER_OF_POKEMONS = 12;
