@@ -3,6 +3,7 @@ export interface Pokemon {
   name: string;
   sprites: Sprites;
   moves: Moves[];
+  location: string | null;
 }
 
 interface Sprites {

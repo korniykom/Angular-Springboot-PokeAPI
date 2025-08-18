@@ -1,9 +1,6 @@
 import { Component, EventEmitter, Input, Output, signal } from "@angular/core";
 import { MatChipsModule } from "@angular/material/chips";
-import {
-  MatSlideToggle,
-  MatSlideToggleModule,
-} from "@angular/material/slide-toggle";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 @Component({
   selector: "app-poke-chips",
   imports: [MatChipsModule, MatSlideToggleModule],

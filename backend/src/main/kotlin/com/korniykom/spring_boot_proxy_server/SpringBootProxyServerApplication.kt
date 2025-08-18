@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class SpringBootProxyServerApplication
 
 fun main(args: Array<String>) {
-	runApplication<SpringBootProxyServerApplication>(*args)
+    runApplication<SpringBootProxyServerApplication>(*args)
 }
