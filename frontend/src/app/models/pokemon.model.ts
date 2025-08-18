@@ -3,7 +3,7 @@ export interface Pokemon {
   name: string;
   sprites: Sprites;
   moves: Moves[];
-  habitat: string;
+  location: string | null;
 }
 
 interface Sprites {

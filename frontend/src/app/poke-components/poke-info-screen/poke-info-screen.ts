@@ -2,7 +2,7 @@ import { Component, input, OnInit } from "@angular/core";
 import { PokeService } from "../poke.service";
 import { Pokemon } from "../../models/pokemon.model";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { HabitatChipComponent } from "../habitat-chip.component/habitat-chip.component";
+import { HabitatChipComponent } from "../location-chip/location-chip";
 
 @Component({
   selector: "app-poke-info-screen",

@@ -10,9 +10,9 @@
     alt="{{ pokemon.name }}"
   />
   <p>{{ pokemon.name }}</p>
-  <app-habitat-chip>{{
-    pokemon.habitat ? pokemon.habitat : "Unknown habitat"
-  }}</app-habitat-chip>
+  <app-location-chip>{{
+    pokemon.location ? pokemon.location : "Unknown habitat"
+  }}</app-location-chip>
   } @else if (error) {
   <div class="error-container">
     <div class="error">

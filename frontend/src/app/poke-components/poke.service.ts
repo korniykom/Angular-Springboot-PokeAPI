@@ -28,7 +28,7 @@ export class PokeService {
         retry(this.NUMBER_OF_RETRIES),
         map((pokemon) => {
           console.log(
-            `Fetched Pokemon: ${pokemon.name} (habitat: ${pokemon.habitat})`
+            `Fetched Pokemon: ${pokemon.name} (location: ${pokemon.location})`
           );
           return pokemon;
         }),
@@ -73,7 +73,7 @@ export class PokeService {
               front_default: data.sprites.front_default,
             },
             moves: data.moves.slice(0, this.NUMBER_OF_MOVES),
-            habitat: data.habitat,
+            location: data.location,
           } as Pokemon)
       ),
       catchError((error) => {
