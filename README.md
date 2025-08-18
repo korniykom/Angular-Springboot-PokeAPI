@@ -1,6 +1,6 @@
 ### Frontend - Angular
 
-<b>PORT : 8080 </b>
+<b>PORT : 4200 </b>
 
 <b>Run command: cd frontend && npm i && npm start</b>
 
