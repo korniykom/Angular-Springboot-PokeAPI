@@ -46,6 +46,7 @@ export class PokeList implements OnInit {
         map(({ pikachu, pokemons }) => {
           if (!pikachu) {
             throw new Error("Failed to load Pikachu");
+            this.error = true;
           }
           return [pikachu, ...pokemons];
         })
@@ -57,7 +58,7 @@ export class PokeList implements OnInit {
         },
         error: (error) => {
           console.log("Error loading pokemons", error);
-          this.error = true;
+
           this.isLoading = false;
         },
       });
