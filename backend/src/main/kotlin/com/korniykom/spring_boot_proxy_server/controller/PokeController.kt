@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 class PokemonController(private val pokemonService: PokeService) {
     @GetMapping("/{nameOrId}")
-    fun getPokemon(@PathVariable nameOrId: String): Pokemon {
+    suspend fun getPokemon(@PathVariable nameOrId: String): Pokemon {
         val pokemon = pokemonService.getPokemon(nameOrId)
         return pokemon
     }
