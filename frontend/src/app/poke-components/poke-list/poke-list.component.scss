@@ -44,3 +44,13 @@
   color: var(--mat-sys-on-surface);
   max-width: 25rem;
 }
+
+@media (max-width: 520px) {
+  .poke-list {
+    grid-template-columns: 1fr;
+  }
+
+  .reload-pokemons {
+    grid-column: span 1;
+  }
+}
