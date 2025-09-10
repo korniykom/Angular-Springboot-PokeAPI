@@ -5,24 +5,18 @@ import com.korniykom.spring_boot_proxy_server.model.LocationResponse
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.reactor.awaitSingleOrNull
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.getForObject
 import org.springframework.web.reactive.function.client.WebClient
-import kotlin.coroutines.coroutineContext
 
 
 @Service
 class PokeService(
-    private val webClient: WebClient.Builder,
-    @Value("\${poke.api.base.url}") private val baseUrl: String
+    private val webClient: WebClient,
 ) {
     suspend fun getPokemon(nameOrId: String): Pokemon = coroutineScope {
-        val client = webClient.baseUrl(baseUrl).build()
 
         val locationDeferred = async {
-            client.get()
+            webClient.get()
                 .uri("/$nameOrId/encounters")
                 .retrieve()
                 .bodyToMono(Array<LocationResponse>::class.java)
@@ -30,7 +24,7 @@ class PokeService(
         }
 
         val pokemonDeferred = async {
-            client.get()
+            webClient.get()
                 .uri("/$nameOrId")
                 .retrieve()
                 .bodyToMono(Pokemon::class.java)
