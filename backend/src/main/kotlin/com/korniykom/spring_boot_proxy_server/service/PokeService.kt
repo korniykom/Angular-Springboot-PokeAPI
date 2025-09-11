@@ -2,8 +2,7 @@ package com.korniykom.spring_boot_proxy_server.service
 
 import Pokemon
 import com.korniykom.spring_boot_proxy_server.model.LocationResponse
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
@@ -13,30 +12,38 @@ import org.springframework.web.reactive.function.client.WebClient
 class PokeService(
     private val webClient: WebClient,
 ) {
-    suspend fun getPokemon(nameOrId: String): Pokemon = coroutineScope {
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-        val locationDeferred = async {
-            webClient.get()
+    private val handler = CoroutineExceptionHandler { _, throwable ->
+        println("Caught: $throwable")
+    }
+
+    suspend fun getPokemon(nameOrId: String): Pokemon? = withContext(Dispatchers.IO + handler) {
+
+        var location: Array<LocationResponse>? = null
+        var pokemon: Pokemon? = null
+
+        val locationJob = scope.launch(handler) {
+            location = webClient.get()
                 .uri("/$nameOrId/encounters")
                 .retrieve()
                 .bodyToMono(Array<LocationResponse>::class.java)
                 .awaitSingleOrNull()
         }
 
-        val pokemonDeferred = async {
-            webClient.get()
+        val pokemonJob = scope.launch(handler) {
+            pokemon = webClient.get()
                 .uri("/$nameOrId")
                 .retrieve()
                 .bodyToMono(Pokemon::class.java)
                 .awaitSingleOrNull()
         }
 
-        val locationResponse = locationDeferred.await()
-        val pokemonResponse = pokemonDeferred.await()
-            ?: throw RuntimeException("Pokemon not found: $nameOrId")
+        locationJob.join()
+        pokemonJob.join()
 
-        pokemonResponse.copy(
-            location = locationResponse?.firstOrNull()?.location_area?.name
+        pokemon?.copy(
+            location = location?.firstOrNull()?.location_area?.name
         )
     }
 }
