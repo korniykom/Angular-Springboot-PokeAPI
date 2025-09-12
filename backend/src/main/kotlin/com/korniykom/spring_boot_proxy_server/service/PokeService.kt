@@ -18,7 +18,7 @@ class PokeService(
         println("Caught: $throwable")
     }
 
-    suspend fun getPokemon(nameOrId: String): Pokemon? = withContext(Dispatchers.IO + handler) {
+    suspend fun getPokemon(nameOrId: String): Pokemon? {
 
         var location: Array<LocationResponse>? = null
         var pokemon: Pokemon? = null
@@ -42,8 +42,9 @@ class PokeService(
         locationJob.join()
         pokemonJob.join()
 
-        pokemon?.copy(
+        return pokemon?.copy(
             location = location?.firstOrNull()?.location_area?.name
         )
     }
 }
+
