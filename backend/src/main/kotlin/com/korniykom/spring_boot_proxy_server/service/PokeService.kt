@@ -17,33 +17,26 @@ class PokeService(
     private val handler = CoroutineExceptionHandler { _, throwable ->
         println("Caught: $throwable")
     }
-
     suspend fun getPokemon(nameOrId: String): Pokemon? {
 
-        var location: Array<LocationResponse>? = null
-        var pokemon: Pokemon? = null
-
-        val locationJob = scope.launch(handler) {
-            location = webClient.get()
+        val location = scope.async(handler) {
+            webClient.get()
                 .uri("/$nameOrId/encounters")
                 .retrieve()
                 .bodyToMono(Array<LocationResponse>::class.java)
                 .awaitSingleOrNull()
         }
 
-        val pokemonJob = scope.launch(handler) {
-            pokemon = webClient.get()
+        val pokemon = scope.async(handler) {
+            webClient.get()
                 .uri("/$nameOrId")
                 .retrieve()
                 .bodyToMono(Pokemon::class.java)
                 .awaitSingleOrNull()
         }
 
-        locationJob.join()
-        pokemonJob.join()
-
-        return pokemon?.copy(
-            location = location?.firstOrNull()?.location_area?.name
+        return pokemon.await()?.copy(
+            location = location.await()?.firstOrNull()?.location_area?.name
         )
     }
 }
