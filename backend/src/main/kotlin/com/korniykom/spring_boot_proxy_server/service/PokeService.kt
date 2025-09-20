@@ -12,32 +12,25 @@ import org.springframework.web.reactive.function.client.WebClient
 class PokeService(
     private val webClient: WebClient,
 ) {
-    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    suspend fun getPokemon(nameOrId: String): Pokemon? = withContext(Dispatchers.IO) {
+        supervisorScope {
+            val handler = CoroutineExceptionHandler { _, throwable ->
+                println("Caught: $throwable")
+            }
 
-    private val handler = CoroutineExceptionHandler { _, throwable ->
-        println("Caught: $throwable")
-    }
-    suspend fun getPokemon(nameOrId: String): Pokemon? {
+            val location = this.async(handler) {
+                webClient.get().uri("/$nameOrId/encounters").retrieve().bodyToMono(Array<LocationResponse>::class.java)
+                    .awaitSingleOrNull()
+            }
 
-        val location = scope.async(handler) {
-            webClient.get()
-                .uri("/$nameOrId/encounters")
-                .retrieve()
-                .bodyToMono(Array<LocationResponse>::class.java)
-                .awaitSingleOrNull()
+            val pokemon = this.async(handler) {
+                webClient.get().uri("/$nameOrId").retrieve().bodyToMono(Pokemon::class.java).awaitSingleOrNull()
+            }
+
+            pokemon.await()?.copy(
+                location = location.await()?.firstOrNull()?.location_area?.name
+            )
         }
-
-        val pokemon = scope.async(handler) {
-            webClient.get()
-                .uri("/$nameOrId")
-                .retrieve()
-                .bodyToMono(Pokemon::class.java)
-                .awaitSingleOrNull()
-        }
-
-        return pokemon.await()?.copy(
-            location = location.await()?.firstOrNull()?.location_area?.name
-        )
     }
 }
 
