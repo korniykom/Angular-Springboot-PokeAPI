@@ -6,7 +6,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { PokeChips } from "../poke-chips/poke-chips.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatIconModule } from "@angular/material/icon";
-import { forkJoin, map } from "rxjs";
+import { catchError, of, map, forkJoin } from "rxjs";
 
 @Component({
   selector: "app-poke-list",
@@ -40,13 +40,19 @@ export class PokeList implements OnInit {
 
     forkJoin({
       pikachu: this.pokemonService.getPickachu(),
-      pokemons: this.pokemonService.getRandomPokemons(this.NUMBER_OF_POKEMONS),
+      pokemons: this.pokemonService
+        .getRandomPokemons(this.NUMBER_OF_POKEMONS)
+        .pipe(
+          catchError(() => {
+            console.warn("Failed to load random pokemons, using only Pikachu");
+            return of([]);
+          })
+        ),
     })
       .pipe(
         map(({ pikachu, pokemons }) => {
           if (!pikachu) {
             throw new Error("Failed to load Pikachu");
-            this.error = true;
           }
           return [pikachu, ...pokemons];
         })
@@ -57,8 +63,8 @@ export class PokeList implements OnInit {
           this.isLoading = false;
         },
         error: (error) => {
-          console.log("Error loading pokemons", error);
-
+          console.error("Error loading Pikachu", error);
+          this.error = true;
           this.isLoading = false;
         },
       });
